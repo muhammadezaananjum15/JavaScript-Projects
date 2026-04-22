@@ -315,7 +315,7 @@ a {
 
 .thumb {
   position: relative;
-  height: 190px;
+  height: AUTO;
   overflow: hidden;
   flex-shrink: 0;
   background: #0c0d14;

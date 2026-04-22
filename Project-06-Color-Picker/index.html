@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Color Generator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container-fluid px-4">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-text">COLOR GENERATOR</span>
+        </div>
+
+      </div>
+    </div>
+  </header>
+  <section class="hero-section">
+    <div class="container-fluid px-4">
+      <div class="row align-items-end">
+        <div class="col-lg-8">
+          <div class="hero-eyebrow">RANDOM COLOR GENERATOR</div>
+          <h1 class="hero-title">CLICK <em>DISCOVER</em> COPY.</h1>
+        </div>
+      
+      </div>
+    </div>
+  </section>
+  <main class="main-section">
+    <div class="container-fluid px-4">
+      <div class="color-stage" id="colorStage">
+        <div class="stage-corners">
+          <span class="sc sc-tl"></span>
+          <span class="sc sc-tr"></span>
+          <span class="sc sc-bl"></span>
+          <span class="sc sc-br"></span>
+        </div>
+        <div class="stage-body">
+          <div class="stage-rgb-label" id="stageLabel">rgb(0, 0, 0)</div>
+          <div class="stage-hint" id="stageHint">
+            <i class="bi bi-cursor-fill"></i>&nbsp; CLICK TO GENERATE
+          </div>
+          <div class="stage-hex-label" id="stageHex">#000000</div>
+        </div>
+        <div class="stage-grid-lines" aria-hidden="true">
+          <span class="gl gl-h"></span>
+          <span class="gl gl-v"></span>
+        </div>
+      </div>
+      <div class="generate-bar">
+        <button class="gen-btn" id="generateBtn">
+          <i class="bi bi-shuffle"></i>
+          <span>GENERATE RANDOM COLOR</span>
+          <span class="gen-counter" id="genCounter">0</span>
+        </button>
+        <button class="gen-btn gen-btn--ghost" onclick="clearHistory()">
+          <i class="bi bi-trash3"></i>
+          <span>CLEAR</span>
+        </button>
+        <button class="gen-btn gen-btn--ghost" onclick="copyAll()">
+          <i class="bi bi-clipboard-check"></i>
+          <span>COPY ALL</span>
+        </button>
+      </div>
+      <div class="row g-3 code-row">
+        <div class="col-6 col-xl-3">
+          <div class="code-card" id="cardRgb" onclick="copyCode('rgb')">
+            <div class="code-card-badge">RGB</div>
+            <div class="code-card-value" id="valRgb">—</div>
+            <div class="code-card-action">
+              <i class="bi bi-clipboard"></i> COPY
+            </div>
+            <div class="code-card-flash" id="flashRgb"></div>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="code-card" id="cardHex" onclick="copyCode('hex')">
+            <div class="code-card-badge">HEX</div>
+            <div class="code-card-value" id="valHex">—</div>
+            <div class="code-card-action">
+              <i class="bi bi-clipboard"></i> COPY
+            </div>
+            <div class="code-card-flash" id="flashHex"></div>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="code-card" id="cardHsl" onclick="copyCode('hsl')">
+            <div class="code-card-badge">HSL</div>
+            <div class="code-card-value" id="valHsl">—</div>
+            <div class="code-card-action">
+              <i class="bi bi-clipboard"></i> COPY
+            </div>
+            <div class="code-card-flash" id="flashHsl"></div>
+          </div>
+        </div>
+        <div class="col-6 col-xl-3">
+          <div class="code-card" id="cardCmyk" onclick="copyCode('cmyk')">
+            <div class="code-card-badge">CMYK</div>
+            <div class="code-card-value" id="valCmyk">—</div>
+            <div class="code-card-action">
+              <i class="bi bi-clipboard"></i> COPY
+            </div>
+            <div class="code-card-flash" id="flashCmyk"></div>
+          </div>
+        </div>
+      </div>
+      <div class="breakdown-section">
+        <div class="section-header">
+          <span class="section-title">RGB BREAKDOWN</span>
+          <span class="section-line"></span>
+        </div>
+        <div class="rgb-bars">
+          <div class="bar-row">
+            <span class="bar-ch bar-ch--r">R</span>
+            <div class="bar-track">
+              <div class="bar-fill bar-r" id="barR"></div>
+            </div>
+            <span class="bar-num" id="numR">0</span>
+            <span class="bar-pct" id="pctR">0%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-ch bar-ch--g">G</span>
+            <div class="bar-track">
+              <div class="bar-fill bar-g" id="barG"></div>
+            </div>
+            <span class="bar-num" id="numG">0</span>
+            <span class="bar-pct" id="pctG">0%</span>
+          </div>
+          <div class="bar-row">
+            <span class="bar-ch bar-ch--b">B</span>
+            <div class="bar-track">
+              <div class="bar-fill bar-b" id="barB"></div>
+            </div>
+            <span class="bar-num" id="numB">0</span>
+            <span class="bar-pct" id="pctB">0%</span>
+          </div>
+        </div>
+      </div>
+      <div class="shades-section">
+        <div class="section-header">
+          <span class="section-title">SHADES &amp; TINTS</span>
+          <span class="section-line"></span>
+        </div>
+        <div class="shades-strip" id="shadesStrip">
+      <!-- IN JAVASCRIPT FILE -->
+        </div>
+      </div>
+
+      <div class="harmony-section">
+        <div class="section-header">
+          <span class="section-title">COLOR HARMONY</span>
+          <span class="section-line"></span>
+        </div>
+        <div class="row g-3" id="harmonyRow">
+      <!-- IN JAVASCRIPT FILE -->
+        </div>
+      </div>
+
+      <div class="history-section">
+        <div class="section-header">
+          <span class="section-title">HISTORY</span>
+          <span class="section-line"></span>
+          <span class="history-count" id="historyCount">0 colors</span>
+        </div>
+        <div class="history-grid" id="historyGrid">
+          <div class="history-empty" id="historyEmpty">
+            <i class="bi bi-palette2"></i>
+            <span>No colors yet — click the stage or hit Generate</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+  <footer class="site-footer">
+    <div class="container-fluid px-4">
+      <div class="footer-inner">
+        <span class="footer-brand">Color Generator</span>
+  
+        <span class="footer-total" id="footerTotal">0 generated</span>
+      </div>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
